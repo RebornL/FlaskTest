@@ -3,6 +3,7 @@ from flask.ext.wtf import Form
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.script import Manager
 from flask.ext.moment import Moment
+from flask.ext.mongoengine import MongoEngine
 from wtforms import StringField,SubmitField
 from wtforms.validators import Required
 from datetime import datetime
@@ -17,9 +18,18 @@ class NameForm(Form):
 app = Flask(__name__)
 #设置密钥,Flask-WTF使用这个密钥生成加密令牌，再用令牌验证请求中表单数据的真伪
 app.config['SECRET_KEY'] = 'qlsuxalee'
+#添加mongodb的配置
+app.config['MONGODB_SETTINGS'] = {
+	'db': 'TestDb',
+	'host': '115.159.161.107',
+	'port':27017,
+	'username':'root',
+	'password':'liu123456'
+}
 bootstrap = Bootstrap(app)#插件初始化
 manager = Manager(app)#命令行解释器
 momen = Moment(app)
+db = MongoEngine(app)
 
 @app.route('/',methods=['GET','POST'])
 def index():
