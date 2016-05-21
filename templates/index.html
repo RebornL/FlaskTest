@@ -24,7 +24,9 @@
 </form>
 -->
 <br /><br />
+<div style="float:right;">
 <p>{{ moment(current_time).format('LLL') }}</p>
 <p>{{ moment(current_time).fromNow(refresh=True) }}</p><!--刷新时间-->
+</div>
 {% endblock%}
 

@@ -11,6 +11,7 @@ from datetime import datetime
 
 class NameForm(Form):
 	name = StringField('your name?',validators=[Required()])
+	passwd = StringField('your passwd?',validators=[Required()])
 	submit = SubmitField('Submit')
 
 
@@ -52,7 +53,7 @@ def index():
 				flash("Input Error")
 	else:
 		#设置session值
-		session.set('name') = benq
+		#session.set('name') = benq
 		print(session.get('name'))
 		return render_template('index.html',form=nameForm,name=session.get('name'),current_time=datetime.utcnow())
 
