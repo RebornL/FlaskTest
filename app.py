@@ -32,30 +32,49 @@ manager = Manager(app)#命令行解释器
 momen = Moment(app)
 db = MongoEngine(app)
 
+class User(db.Document):
+	#定义mongodb的数据库类型
+	username = db.StringField(required=True)
+	#username = db.StringField(required=True,unique=True)
+	passwd = db.StringField(required=True)
+
 @app.route('/',methods=['GET','POST'])
 def index():
 	name = None
 	nameForm = NameForm()
 	#session.set('name') = ben
 	#nameForm.validate_on_submit()方法，提交表单后，
-	#如果数据鞥被所有验证函数接受，那么nameForm.validate_on_submit()方法返回True，
+	#如果数据被所有验证函数接受，那么nameForm.validate_on_submit()方法返回True，
 	#否则返回False
-	
+
 	#先判断session是否存在之
 	if session.get('name'):
-		if nameForm.validate_on_submit():
-			newName = nameForm.name.data#获取表格输入
-			if newName == session.get('name'):
-				session['name'] = nameForm.name.data
-				nameForm.name.data = ''
-				return redirect(url_for('index'))#重定向
-			else:
-				flash("Input Error")
+		#已经登录过的
+		return render_template('index.html',form=nameForm,name=session.get('name'),current_time=datetime.utcnow())
 	else:
+		#没有登录过的
+		if nameForm.validate_on_submit():
+			userName = nameForm.name.data#获取表格输入
+			userPasswd = nameForm.passwd.data
+			user = User(username=userName,passwd=userPasswd)
+			nameForm.name.data = ''
+			nameForm.passwd.data = ''
+			if User.objects(username=userName):
+				#判断该用户名是否被注册了
+				flash("This username has exitted!")
+			else:
+				#如果还没有注册
+				if user.save():
+					print(user.save())
+					#数据库存储成功的话
+					return render_template('index.html',form=nameForm,name=userName,current_time=datetime.utcnow())
+				else:
+					flash("Input Error")
 		#设置session值
 		#session.set('name') = benq
-		print(session.get('name'))
-		return render_template('index.html',form=nameForm,name=session.get('name'),current_time=datetime.utcnow())
+		#print(session.get('name'))
+		return render_template('index.html',form=nameForm,current_time=datetime.utcnow())
+		
 
 @app.route('/user/<name>')
 def user(name):
@@ -73,7 +92,7 @@ def page_no_found(e):
 
 
 if __name__ == '__main__':
-	#app.run(debug=True)
-	manager.run()#可以在命令行中传入参数并接收，即可以解析命令行参数
+	app.run(debug=True)
+	#manager.run()#可以在命令行中传入参数并接收，即可以解析命令行参数
 
 
