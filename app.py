@@ -81,9 +81,9 @@ def user(name):
 	#默认在templates文件夹中寻找模板
 	return render_template('user.html',user=name)
 
-@app.route('/page')
+@app.route('/introduction')
 def page():
-	return render_template('page.html')
+	return render_template('introduction.html')
 
 #404 page
 @app.errorhandler(404)
