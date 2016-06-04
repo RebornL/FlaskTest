@@ -1,21 +1,24 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}Index{% endblock%}
+{% block title %}GameName{% endblock%}
 
 {% block page_content %}
-<h1>Index Page</h1>
+<h1>Game Index Page</h1>
 
 <div class="page-header">
 {% if name %}
 <h2>Hello,{{ name }}</h2>
+<a href='/introduction'>查看游戏介绍</a>
 {% else %}
 <h2>Hello,Vistor</h2>
-{% endif %}
-</div>
+<p>欢迎注册</p>
 <!--wtf.quick_form()函数的参数为Flask-WTF表单对象，使用Bootstrap样式渲染传入的表单。
 -->
 {{ wtf.quick_form(form) }}
+{% endif %}
+</div>
+
 <!--
 <form method="POST">
     {{ form.hidden_tag() }}
