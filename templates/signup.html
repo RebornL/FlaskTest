@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}GameName{% endblock%}
+
+{% block page_content %}
+<h1>Signup Page</h1>
+<!--<div>-->
+
+<!--<div style="clear:both;"></div>-->
+<!--</div>-->
+<div class="page-header">
+<h2>Hello,Vistor</h2>
+<p>欢迎注册</p>
+<!--wtf.quick_form()函数的参数为Flask-WTF表单对象，使用Bootstrap样式渲染传入的表单。
+-->
+{{ wtf.quick_form(form) }}
+</div>
+
+<!--
+<form method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.name.label  }} {{ form.name() }}
+    {{ form.submit() }}
+</form>
+-->
+<br /><br />
+<div style="float:right;">
+<p>{{ moment(current_time).format('LLL') }}</p>
+<p>{{ moment(current_time).fromNow(refresh=True) }}</p><!--刷新时间-->
+</div>
+{% endblock%}

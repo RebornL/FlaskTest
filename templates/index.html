@@ -1,35 +1,24 @@
-{% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %} 
 
-{% block title %}GameName{% endblock%}
-
-{% block page_content %}
+{% block title %}GameName{% endblock%} 
+{% block page_content%}
+<a style="float:right;padding-left:10px;" href="/signup">注册</a>&emsp;&emsp;
+<a style="float:right" href="/logout">登出</a>
 <h1>Game Index Page</h1>
 
 <div class="page-header">
-{% if name %}
-<h2>Hello,{{ name }}</h2>
-<a href='/introduction'>查看游戏介绍</a>
-{% else %}
-<h2>Hello,Vistor</h2>
-<p>欢迎注册</p>
-<!--wtf.quick_form()函数的参数为Flask-WTF表单对象，使用Bootstrap样式渲染传入的表单。
--->
-{{ wtf.quick_form(form) }}
-{% endif %}
+    {% if name %}
+    <h2>Hello,{{ name }}</h2>
+    <a href='/introduction'>查看游戏介绍</a> {% else %}
+    <h2>Hello,Vistor</h2>
+    <p>欢迎注册</p>
+    {% endif %}
 </div>
 
-<!--
-<form method="POST">
-    {{ form.hidden_tag() }}
-    {{ form.name.label  }} {{ form.name() }}
-    {{ form.submit() }}
-</form>
--->
 <br /><br />
 <div style="float:right;">
-<p>{{ moment(current_time).format('LLL') }}</p>
-<p>{{ moment(current_time).fromNow(refresh=True) }}</p><!--刷新时间-->
+    <p>{{ moment(current_time).format('LLL') }}</p>
+    <p>{{ moment(current_time).fromNow(refresh=True) }}</p>
+    <!--刷新时间-->
 </div>
 {% endblock%}
-
