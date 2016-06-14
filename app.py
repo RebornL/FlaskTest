@@ -6,14 +6,15 @@ from flask.ext.bootstrap import Bootstrap
 from flask.ext.script import Manager
 from flask.ext.moment import Moment
 from flask.ext.mongoengine import MongoEngine
-from wtforms import StringField,SubmitField
+from wtforms import StringField,SubmitField,PasswordField
 from wtforms.validators import Required
 from datetime import datetime,timedelta
+from flask_debugtoolbar import DebugToolbarExtension
 
 
 class NameForm(Form):
 	name = StringField('your name?',validators=[Required()])
-	passwd = StringField('your passwd?',validators=[Required()])
+	passwd = PasswordField('your passwd?',validators=[Required()])
 	submit = SubmitField('Submit')
 
 
@@ -21,11 +22,13 @@ class NameForm(Form):
 app = Flask(__name__)
 #设置密钥,Flask-WTF使用这个密钥生成加密令牌，再用令牌验证请求中表单数据的真伪
 app.config['SECRET_KEY'] = 'qlsuxalee'
+#debug调试工具
+app.config['DEBUG_TB_PANELS'] = ['flask.ext.mongoengine.panels.MongoDebugPanel']
 #设置session的有效时间
 app.permanent_session_lifetime = timedelta(minutes=5)
 #添加mongodb的配置
 app.config['MONGODB_SETTINGS'] = {
-	'db': 'TestDb',
+	'db': 'Game',
 	'host': '115.159.161.107',
 	'port':27017,
 	'username':'root',
@@ -35,6 +38,7 @@ bootstrap = Bootstrap(app)#插件初始化
 manager = Manager(app)#命令行解释器
 momen = Moment(app)
 db = MongoEngine(app)
+toolbar = DebugToolbarExtension(app)
 
 #设置调试模式
 app.debug = True
@@ -44,6 +48,8 @@ class User(db.Document):
 	username = db.StringField(required=True)
 	#username = db.StringField(required=True,unique=True)
 	passwd = db.StringField(required=True)
+	#分数记录
+	score = db.IntField(required=True,default=0)
 
 @app.route('/index')
 def index():
@@ -115,6 +121,20 @@ def page():
 @app.errorhandler(404)
 def page_no_found(e):
 	return render_template('404.html')
+
+#test路径，测试mongoengine的order
+@app.route('/test')
+def test():
+	# for i in range(1,10):
+	# 	# print(i)
+	# 	user = User(username="test"+str(i),passwd=str(i),score=i)
+	# 	user.save()
+	# 	print(str(user.id))
+	#
+	users = User.objects.order_by("-score").limit(5)
+	for user in users:
+		print(user['username'])
+	return "<h1>hello</h1>"
 
 
 if __name__ == '__main__':
