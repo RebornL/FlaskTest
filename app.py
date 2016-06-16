@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+import json
 from flask import Flask,render_template,session,url_for,flash,redirect,request,jsonify
 from flask.ext.wtf import Form
 from flask.ext.bootstrap import Bootstrap
@@ -158,17 +158,35 @@ def validateUser():
 #分数登记
 #json.loads(request.data)
 # request.data 这个属性用于表示 POST 等请求的请求体中的数据
-@app.route('/scorelog',method=['POST'])
+@app.route('/scorelog',methods=['POST'])
 def scorcelog():
 	userData = json.loads(request.data)
+	userName = userData['username']
+	user = User.objects(username=userName).first()
+	if user:
+		user.update(score = userData['score'])
+		return jsonify({'error':0})#error为0表示征程
+	else:
+		#发送出错信息
+		return jsonify({'error':1})#error为1表示出错
 	print(userData)
 	#根据用户名得到该用户
 	#然后使用update更新用户数据
 	
-#获取分数
+#游戏中注册
+@app.route('/register',methods=['POST'])
+def register():
+	registerData = json.loads(request.data)
+	#验证该用户名数据库中是否存在
+	if User.objects(username=registerData['username']):
+		return jsonify({'error':1})
+	else:
+		user = User(username=registerData['username'],passwd=registerData['password'])
+		user.save()
+		return jsonify({'error':0})
 
 if __name__ == '__main__':
-	app.run("0.0.0.0");
+	app.run(host="0.0.0.0");
 	#manager.run()#可以在命令行中传入参数并接收，即可以解析命令行参数
 
 
