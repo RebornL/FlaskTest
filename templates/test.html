@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+    <head>
+        <title>测试</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <button id="test">test</button>
+        
+    </body>
+    <script src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+    <script>
+        $(function(){
+            $("#test").click(function(){
+               $.get('/validate',{userName : "test1"}).done(function(data){
+                    data = eval('('+data+')');
+                    console.log(data['username']);
+                //    alert(data['username']);
+                    if(!data['error']) {
+                        alert(data['username'])
+                    }
+               }); 
+            });
+            
+        })
+        
+    </script>
+</html>

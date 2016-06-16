@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from flask import Flask,render_template,session,url_for,flash,redirect
+from flask import Flask,render_template,session,url_for,flash,redirect,request,jsonify
 from flask.ext.wtf import Form
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.script import Manager
@@ -131,14 +131,44 @@ def test():
 	# 	user.save()
 	# 	print(str(user.id))
 	#
-	users = User.objects.order_by("-score").limit(5)
-	for user in users:
-		print(user['username'])
-	return "<h1>hello</h1>"
+	# users = User.objects.order_by("-score").limit(5)
+	# for user in users:
+	# 	print(user['username'])
+	# return "<h1>hello</h1>"
+	return render_template('test.html')
 
+#这里建立一个RESTful接口
+#验证用户
+@app.route('/validate',methods=['GET'])
+def validateUser():
+	userName = request.args.get('userName')
+	if User.objects(username=userName):
+		#这个用户存在，返回error为0
+		user = User.objects(username=userName).first()
+		# print(user.to_json())
+		# print(user['passwd'])
+		# print(user['score'])
+		#返回用户的信息（username，passwd用于前端验证，score可用于前端显示）
+		return jsonify(user.to_json())
+	else :
+		#用户名不存在
+		return jsonify({'error':1})
+	# print("userName: "+userName);
+	# return jsonify({'msg':1})
+#分数登记
+#json.loads(request.data)
+# request.data 这个属性用于表示 POST 等请求的请求体中的数据
+@app.route('/scorelog',method=['POST'])
+def scorcelog():
+	userData = json.loads(request.data)
+	print(userData)
+	#根据用户名得到该用户
+	#然后使用update更新用户数据
+	
+#获取分数
 
 if __name__ == '__main__':
-	app.run()
+	app.run("0.0.0.0");
 	#manager.run()#可以在命令行中传入参数并接收，即可以解析命令行参数
 
 
