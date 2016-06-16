@@ -9,7 +9,7 @@ from flask.ext.mongoengine import MongoEngine
 from wtforms import StringField,SubmitField,PasswordField
 from wtforms.validators import Required
 from datetime import datetime,timedelta
-from flask_debugtoolbar import DebugToolbarExtension
+# from flask_debugtoolbar import DebugToolbarExtension
 
 
 class NameForm(Form):
@@ -38,7 +38,7 @@ bootstrap = Bootstrap(app)#插件初始化
 manager = Manager(app)#命令行解释器
 momen = Moment(app)
 db = MongoEngine(app)
-toolbar = DebugToolbarExtension(app)
+# toolbar = DebugToolbarExtension(app)
 
 #设置调试模式
 app.debug = True
