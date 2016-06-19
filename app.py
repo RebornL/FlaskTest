@@ -87,7 +87,7 @@ def signup():
 			else:
 				#如果还没有注册
 				if user.save():
-					print(user.save())
+					# print(user.save())
 					#设置seesion，记录登陆状态
 					session['username'] = userName
 					#数据库存储成功的话
