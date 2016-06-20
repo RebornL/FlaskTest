@@ -160,7 +160,7 @@ def validateUser():
 # request.data 这个属性用于表示 POST 等请求的请求体中的数据
 @app.route('/scorelog',methods=['POST'])
 def scorcelog():
-	userData = json.loads(request.data)
+	userData = request.json#json.loads(request.data)
 	userName = userData['userName']
 	user = User.objects(username=userName).first()
 	if user:
