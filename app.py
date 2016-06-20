@@ -182,7 +182,7 @@ def register():
 	registerData = request.json#json.loads(request.data)
 	print(registerData)
 	# 验证该用户名数据库中是否存在
-	if User.objects(username=registerData['userName']):
+	if User.objects(username=registerData['userName']).first():
 		return jsonify({'error':1})
 	else:
 		user = User(username=registerData['userName'],passwd=registerData['password'])
