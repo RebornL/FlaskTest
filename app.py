@@ -161,7 +161,7 @@ def validateUser():
 @app.route('/scorelog',methods=['POST'])
 def scorcelog():
 	userData = json.loads(request.data)
-	userName = userData['username']
+	userName = userData['userName']
 	user = User.objects(username=userName).first()
 	if user:
 		user.update(score = userData['score'])
@@ -176,12 +176,16 @@ def scorcelog():
 #游戏中注册
 @app.route('/register',methods=['POST'])
 def register():
-	registerData = json.loads(request.data)
-	#验证该用户名数据库中是否存在
-	if User.objects(username=registerData['username']):
+	# print(request.json)
+	# print(json.loads(request.form))
+	# return jsonify({'error':0})
+	registerData = request.json#json.loads(request.data)
+	print(registerData)
+	# 验证该用户名数据库中是否存在
+	if User.objects(username=registerData['userName']):
 		return jsonify({'error':1})
 	else:
-		user = User(username=registerData['username'],passwd=registerData['password'])
+		user = User(username=registerData['userName'],passwd=registerData['password'])
 		user.save()
 		return jsonify({'error':0})
 

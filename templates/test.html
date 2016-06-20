@@ -2,24 +2,49 @@
 <html>
     <head>
         <title>测试</title>
+        
         <meta charset="utf-8">
     </head>
     <body>
-        <button id="test">test</button>
+        <input type="text" id="username"/>
+        <button id="test1">test</button>
         
     </body>
-    <script src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+    <!--<script src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
     <script>
         $(function(){
-            $("#test").click(function(){
-               $.get('/validate',{userName : "test1"}).done(function(data){
-                    data = eval('('+data+')');
-                    console.log(data['username']);
-                //    alert(data['username']);
-                    if(!data['error']) {
-                        alert(data['username'])
+            $("#test1").click(function(){
+            //    $.get('/validate',{userName : "test1"}).done(function(data){
+            //         data = eval('('+data+')');
+            //         console.log(data['username']);
+            //     //    alert(data['username']);
+            //         if(!data['error']) {
+            //             alert(data['username'])
+            //         }
+            //    });
+                var username = $("#username").val();
+                console.log(username); 
+                // $.post('/register',{}).done(function(data){
+                //     console.log(data);
+                    
+                // }) 
+                $.ajax({
+                    type: 'POST',
+                    // Provide correct Content-Type, so that Flask will know how to process it.
+                    contentType: 'application/json',
+                    // Encode data as JSON.
+                    data: JSON.stringify({
+                        userName:username,
+                        password:"11111"
+                    }),
+                    // This is the type of data expected back from the server.
+                    dataType: 'json',
+                    url: '/register',
+                    success: function (ret) {
+                        alert('JSON posted: ' + JSON.stringify(ret));
                     }
-               }); 
+                });
             });
             
         })
