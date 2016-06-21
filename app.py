@@ -174,7 +174,7 @@ def scorcelog():
 	#然后使用update更新用户数据
 
 #暂时改成GET操作
-@app.route('/scorelog',methods=['GET'])
+@app.route('/scorelogget',methods=['GET'])
 def scorcelog():
 	userName = request.args.get('userName')
 	user = User.objects(username=userName).first()
@@ -202,7 +202,7 @@ def register():
 		user.save()
 		return jsonify({'error':0})
 		
-@app.route('/register',methods=['GET'])
+@app.route('/registerget',methods=['GET'])
 def register():
 	# print(request.json)
 	# print(json.loads(request.form))
