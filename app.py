@@ -172,6 +172,19 @@ def scorcelog():
 	print(userData)
 	#根据用户名得到该用户
 	#然后使用update更新用户数据
+
+#暂时改成GET操作
+@app.route('/scorelog',methods=['GET'])
+def scorcelog():
+	userName = request.args.get('userName')
+	user = User.objects(username=userName).first()
+	if user:
+		user.update(score = request.args.get('score'))
+		return jsonify({'error':0})#error为0表示征程
+	else:
+		#发送出错信息
+		return jsonify({'error':1})#error为1表示出错
+	print(userData)
 	
 #游戏中注册
 @app.route('/register',methods=['POST'])
@@ -186,6 +199,21 @@ def register():
 		return jsonify({'error':1})
 	else:
 		user = User(username=registerData['userName'],passwd=registerData['password'])
+		user.save()
+		return jsonify({'error':0})
+		
+@app.route('/register',methods=['GET'])
+def register():
+	# print(request.json)
+	# print(json.loads(request.form))
+	# return jsonify({'error':0})
+	# registerData = request.json#json.loads(request.data)
+	# print(registerData)
+	# 验证该用户名数据库中是否存在
+	if User.objects(username=request.args.get('userName')).first():
+		return jsonify({'error':1})
+	else:
+		user = User(username=request.args.get('userName'),passwd=request.args.get('password'))
 		user.save()
 		return jsonify({'error':0})
 
