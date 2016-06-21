@@ -175,7 +175,7 @@ def scorcelog():
 
 #暂时改成GET操作
 @app.route('/scorelogget',methods=['GET'])
-def scorcelog():
+def scorelogget():
 	userName = request.args.get('userName')
 	user = User.objects(username=userName).first()
 	if user:
@@ -203,7 +203,7 @@ def register():
 		return jsonify({'error':0})
 		
 @app.route('/registerget',methods=['GET'])
-def register():
+def registerget():
 	# print(request.json)
 	# print(json.loads(request.form))
 	# return jsonify({'error':0})
