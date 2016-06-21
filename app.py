@@ -130,7 +130,7 @@ def test():
 	# 	user = User(username="test"+str(i),passwd=str(i),score=i)
 	# 	user.save()
 	# 	print(str(user.id))
-	#
+	#获取分数最高的前五名
 	# users = User.objects.order_by("-score").limit(5)
 	# for user in users:
 	# 	print(user['username'])
@@ -188,6 +188,20 @@ def register():
 		user = User(username=registerData['userName'],passwd=registerData['password'])
 		user.save()
 		return jsonify({'error':0})
+
+#获取分数排名前5的人
+@app.route('/getfiveuser',methods=['GET'])
+def getfiveuser():
+	userDict = {}
+	i = 1
+	users = User.objects.order_by("-score").limit(5)
+	for user in users:
+		print(user['username'])
+		userDict['No'+str(i)] = user
+		i = i + 1;
+		
+	return jsonify(userDict)
+		
 
 if __name__ == '__main__':
 	app.run(host="0.0.0.0");
