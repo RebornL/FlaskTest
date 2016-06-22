@@ -142,14 +142,25 @@ def test():
 @app.route('/validate',methods=['GET'])
 def validateUser():
 	userName = request.args.get('userName')
+	password = request.args.get('password')
+	print(type(password))
+	print("password "+str(password))
 	if User.objects(username=userName):
 		#这个用户存在，返回error为0
 		user = User.objects(username=userName).first()
+		print(type(user['passwd']))
+		print("user.passwd :"+user["passwd"])
+		if user["passwd"] == password:
+			#如果密码正确
+			return jsonify({'score': user['score'],'error':0})
+		else:
+			return jsonify({'error':1});
+			
 		# print(user.to_json())
 		# print(user['passwd'])
 		# print(user['score'])
 		#返回用户的信息（username，passwd用于前端验证，score可用于前端显示）
-		return jsonify(user.to_json())
+		# return jsonify(user.to_json())
 	else :
 		#用户名不存在
 		return jsonify({'error':1})
