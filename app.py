@@ -175,7 +175,7 @@ def scorcelog():
 
 #暂时改成GET操作
 @app.route('/scorelogget',methods=['GET'])
-def scorelogget():
+def scorelogGet():
 	userName = request.args.get('userName')
 	user = User.objects(username=userName).first()
 	if user:
@@ -203,17 +203,19 @@ def register():
 		return jsonify({'error':0})
 		
 @app.route('/registerget',methods=['GET'])
-def registerget():
+def registerGet():
 	# print(request.json)
 	# print(json.loads(request.form))
 	# return jsonify({'error':0})
 	# registerData = request.json#json.loads(request.data)
 	# print(registerData)
+	userName = request.args.get('userName')
+	password = request.args.get('password')
 	# 验证该用户名数据库中是否存在
-	if User.objects(username=request.args.get('userName')).first():
+	if User.objects(username=userName):
 		return jsonify({'error':1})
 	else:
-		user = User(username=request.args.get('userName'),passwd=request.args.get('password'))
+		user = User(passwd=password,username=userName)
 		user.save()
 		return jsonify({'error':0})
 
