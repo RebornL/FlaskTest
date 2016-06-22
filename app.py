@@ -261,7 +261,7 @@ def getRank():
 			print(str(i)+" : "+user['username']+" "+str(user['score']))
 			backData['No'+str(i)] = {'username': user['username'],'score': user['score']}
 			i = i + 1
-		print("backData显示如下：")
+		# print("backData显示如下：")
 		print(backData)
 		return jsonify(backData)
 	else:
