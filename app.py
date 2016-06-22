@@ -144,19 +144,18 @@ def test():
 def validateUser():
 	userName = request.args.get('userName')
 	password = request.args.get('password')
-	print(type(password))
-	print("password "+str(password))
+	# print(type(password))
+	# print("password "+str(password))
 	if User.objects(username=userName):
 		#这个用户存在，返回error为0
 		user = User.objects(username=userName).first()
-		print(type(user['passwd']))
-		print("user.passwd :"+user["passwd"])
+		# print(type(user['passwd']))
+		# print("user.passwd :"+user["passwd"])
 		if user["passwd"] == password:
 			#如果密码正确
 			return jsonify({'score': user['score'],'error':0})
 		else:
-			return jsonify({'error':1});
-			
+			return jsonify({'error':1});			
 		# print(user.to_json())
 		# print(user['passwd'])
 		# print(user['score'])
@@ -197,7 +196,7 @@ def scorelogGet():
 	else:
 		#发送出错信息
 		return jsonify({'error':1})#error为1表示出错
-	print(userData)
+	# print(userData)
 	
 #游戏中注册
 @app.route('/register',methods=['POST'])
@@ -206,7 +205,7 @@ def register():
 	# print(json.loads(request.form))
 	# return jsonify({'error':0})
 	registerData = request.json#json.loads(request.data)
-	print(registerData)
+	# print(registerData)
 	# 验证该用户名数据库中是否存在
 	if User.objects(username=registerData['userName']).first():
 		return jsonify({'error':1})
@@ -239,7 +238,7 @@ def getfiveuser():
 	i = 1
 	users = User.objects.order_by("-score").limit(5)
 	for user in users:
-		print(user['username'])
+		# print(user['username'])
 		userDict['No'+str(i)] = user
 		i = i + 1;
 		
@@ -253,16 +252,16 @@ def getRank():
 		#这个用户存在，返回error为0
 		userNow = User.objects(username=userName).first()
 		#数据库存在此用户
-		print("userNow : "+str(userNow['score']))
+		# print("userNow : "+str(userNow['score']))
 		backData['userScore'] = userNow['score']
 		users = User.objects.order_by("-score").limit(3)
 		i = 1
 		for user in users:
-			print(str(i)+" : "+user['username']+" "+str(user['score']))
+			# print(str(i)+" : "+user['username']+" "+str(user['score']))
 			backData['No'+str(i)] = {'username': user['username'],'score': user['score']}
 			i = i + 1
 		# print("backData显示如下：")
-		print(backData)
+		# print(backData)
 		return jsonify(backData)
 	else:
 		return jsonify({'error':1})
