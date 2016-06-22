@@ -188,9 +188,10 @@ def scorcelog():
 @app.route('/scorelogget',methods=['GET'])
 def scorelogGet():
 	userName = request.args.get('userName')
+	scoreget = request.args.get('score')
 	user = User.objects(username=userName).first()
 	if user:
-		user.update(score = request.args.get('score'))
+		user.update(score = int(scoreget))
 		return jsonify({'error':0})#error为0表示征程
 	else:
 		#发送出错信息
