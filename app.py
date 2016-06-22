@@ -243,7 +243,33 @@ def getfiveuser():
 		i = i + 1;
 		
 	return jsonify(userDict)
+
+@app.route('/getrank',methods=['GET'])
+def getRank():
+	userName = request.args.get('userName')
+	backData = {}
+	if User.objects(username=userName):
+		#这个用户存在，返回error为0
+		userNow = User.objects(username=userName).first()
+		#数据库存在此用户
+		print("userNow : "+str(userNow['score']))
+		backData['userScore'] = userNow['score']
+		users = User.objects.order_by("-score").limit(3)
+		i = 1
+		for user in users:
+			print(str(i)+" : "+user['username']+" "+str(user['score']))
+			backData['No'+str(i)] = {'username': user['username'],'score': user['score']}
+			i = i + 1
+		print("backData显示如下：")
+		print(backData)
+		return jsonify(backData)
+	else:
+		return jsonify({'error':1})
 		
+	# if backData:
+	# 	return jsonify({'error':0})
+	# else:	
+	# 	return jsonify({'error':1})
 
 if __name__ == '__main__':
 	app.run(host="0.0.0.0");

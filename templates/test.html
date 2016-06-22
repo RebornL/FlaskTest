@@ -6,15 +6,29 @@
         <meta charset="utf-8">
     </head>
     <body>
-        <input type="text" id="username"/>
-        <input type="text" id="password">
-        <button id="test1">test</button>
-        <button id="test2">validate</button>
+        userName:<input type="text" id="username"/><br/>
+        password:<input type="text" id="password"><br/>
+        <button id="test1">test</button><br/>
+        <button id="test2">validate</button><br/>
+        <button id="test3">getRank</button>
     </body>
     <!--<script src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
     <script>
         $(function(){
+            $("#test3").click(function() {
+                //validate测试
+                $.get('/getrank',{userName : "lqb111"}).done(function(data){
+                    data = eval('('+data+')');
+                    // console.log(data['username']);
+                //    alert(data['username']);
+                    if(!data['error']) {
+                        alert(data);
+                    }
+               });
+            });
+            
+            
             $("#test2").click(function() {
                 //validate测试
                 $.get('/validate',{userName : "lqb111",password:"lqb111"}).done(function(data){
@@ -25,7 +39,7 @@
                         alert(data['username'])
                     }
                });
-            })
+            });
             
             
             $("#test1").click(function(){
